@@ -1,0 +1,18 @@
+PODS:
+  - CobrowseIO (2.33.2):
+    - CobrowseIO/XCFramework (= 2.33.2)
+  - CobrowseIO/XCFramework (2.33.2)
+
+DEPENDENCIES:
+  - CobrowseIO (~> 2)
+
+SPEC REPOS:
+  trunk:
+    - CobrowseIO
+
+SPEC CHECKSUMS:
+  CobrowseIO: 35272a3bad4a36bf009e2c5294a4eadfccb3f68b
+
+PODFILE CHECKSUM: 6abb6361c9d799f4aa57e4a679a0a1993452da1b
+
+COCOAPODS: 1.15.2

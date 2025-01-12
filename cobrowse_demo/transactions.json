@@ -1,0 +1,64 @@
+{
+  "user": {
+    "user_id": 1001,
+    "first_name": "John",
+    "last_name": "Doe",
+    "email": "john.doe@email.com",
+    "phone_number": "123-456-7890",
+    "created_at": "2022-01-15T08:00:00"
+  },
+  "accounts": [
+    {
+      "account_id": 1,
+      "account_type": "Checking",
+      "balance": 1500.00,
+      "created_at": "2023-01-01T10:00:00",
+      "transactions": [
+        {
+          "transaction_id": 1,
+          "transaction_type": "Deposit",
+          "amount": 1000.00,
+          "transaction_date": "2023-01-05T09:30:00",
+          "description": "Salary deposit"
+        },
+        {
+          "transaction_id": 2,
+          "transaction_type": "Withdrawal",
+          "amount": 200.00,
+          "transaction_date": "2023-01-10T12:00:00",
+          "description": "ATM withdrawal"
+        },
+        {
+          "transaction_id": 3,
+          "transaction_type": "Transfer",
+          "amount": 300.00,
+          "transaction_date": "2023-02-15T14:00:00",
+          "description": "Transfer to Savings account"
+        }
+      ]
+    },
+    {
+      "account_id": 2,
+      "account_type": "Savings",
+      "balance": 5000.00,
+      "created_at": "2022-05-15T14:30:00",
+      "transactions": [
+        {
+          "transaction_id": 4,
+          "transaction_type": "Deposit",
+          "amount": 1500.00,
+          "transaction_date": "2023-05-01T16:45:00",
+          "description": "Tax refund"
+        },
+        {
+          "transaction_id": 5,
+          "transaction_type": "Withdrawal",
+          "amount": 500.00,
+          "transaction_date": "2023-06-10T10:00:00",
+          "description": "Emergency fund withdrawal"
+        }
+      ]
+    }
+  ]
+}
+

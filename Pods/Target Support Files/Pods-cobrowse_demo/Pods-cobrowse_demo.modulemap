@@ -1,0 +1,6 @@
+framework module Pods_cobrowse_demo {
+  umbrella header "Pods-cobrowse_demo-umbrella.h"
+
+  export *
+  module * { export * }
+}
