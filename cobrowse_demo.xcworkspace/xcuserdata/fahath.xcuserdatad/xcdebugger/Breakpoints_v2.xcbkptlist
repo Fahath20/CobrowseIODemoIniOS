@@ -7,7 +7,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "8E642719-2D6D-4A0F-8020-54D94C7BF14B"
+            uuid = "F94400F5-501B-4799-802E-6A75EAEFFA6B"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -16,23 +16,39 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "77"
             endingLineNumber = "77"
-            landmarkName = "cobrowseHandleSessionRequest(_:)"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1934C9F5-843C-417E-B415-88C9D8D62C86"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "cobrowse_demo/CobrowseManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "97"
+            endingLineNumber = "97"
+            landmarkName = "cobrowseSessionDidUpdate(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "BE728350-AD75-4318-B8F7-7D8CB3FDB8FC"
+            uuid = "0B239FFD-1DF8-4F34-AD1F-14ABA57583F7"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "cobrowse_demo/cobrowse_demoApp.swift"
+            filePath = "cobrowse_demo/CobrowseManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "28"
-            endingLineNumber = "28"
-            landmarkName = "init()"
+            startingLineNumber = "115"
+            endingLineNumber = "115"
+            landmarkName = "cobrowseHandleSessionRequest(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

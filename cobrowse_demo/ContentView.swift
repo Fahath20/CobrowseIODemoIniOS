@@ -8,19 +8,15 @@
 import SwiftUI
 import CobrowseIO
 
-class TransactionViewModel: NSObject, ObservableObject, CobrowseIODelegate {
+class AccountViewModel: NSObject, ObservableObject {
 
-    
-    @Published var sessionState = ""
     @Published var checkingTransactions = [Transaction]()
     @Published var savingsTransactions = [Transaction]()
     @Published var userName = "User"
-    @Published var handleRemoteRequest = false
-    @Published var cobrowseSession: CBIOSession? = nil
+    var email = ""
 
     override init() {
         super.init()
-        CobrowseIO.instance().delegate = self
         
         let response = AccountTransactions.parseJSONFromFile()
         
@@ -44,44 +40,30 @@ class TransactionViewModel: NSObject, ObservableObject, CobrowseIODelegate {
            let lastName = response?.user.lastName {
             self.userName = firstName + " " + lastName
         }
-    }
-    
-    func startSession() {
-        CobrowseIO.instance().start()
-//        CobrowseIO.instance().createSession { error, session in
-//            if let error {
-//                print("Error occured", error)
-//            } else {
-//                print(session ?? "No Session created")
-//            }
-//        }
-    }
-    
-    func stopSession() {
-        CobrowseIO.instance().currentSession()?.end()
-    }
-    
-    func cobrowseSessionDidLoad(_ session: CBIOSession) {
-        sessionState = session.state()
-    }
-    
-    func cobrowseSessionDidUpdate(_ session: CBIOSession) {
-        sessionState = session.state()
-    }
-    
-    func cobrowseSessionDidEnd(_ session: CBIOSession) {
-        sessionState = session.state()
-    }
-    
-    func cobrowseHandleSessionRequest(_ session: CBIOSession) {
-        handleRemoteRequest = true
-        cobrowseSession = session
+        
+        if let email = response?.user.email {
+            self.email = email
+        }
     }
 }
 
+
+
 struct ContentView: View {
-    @ObservedObject var viewModel = TransactionViewModel()
+    @ObservedObject var viewModel: AccountViewModel
+    @ObservedObject var cobrowseManager: CobrowseManager
+    @State var showCode: Bool
+    @State var agentCode: String?
     
+    init(viewModel: AccountViewModel = AccountViewModel(), cobrowseManager: CobrowseManager = CobrowseManager(), showCode: Bool = false, agentCode: String? = nil) {
+        self.viewModel = viewModel
+        self.cobrowseManager = cobrowseManager
+        self.showCode = showCode
+        self.agentCode = agentCode
+        
+        self.cobrowseManager.initSession(userEmail: self.viewModel.email, capabilities: ["laser"])
+    }
+
     var body: some View {
         
         NavigationStack {
@@ -92,12 +74,23 @@ struct ContentView: View {
                         .bold()
                     Spacer()
                     
-                    if viewModel.sessionState == "active" {
+                    if cobrowseManager.isSessionActive {
                         Button("Stop Cobrowse session") {
-                            viewModel.stopSession()
+                            cobrowseManager.endSession { result in
+                                print(result)
+                            }
                         }
                         .buttonStyle(.bordered)
                         .tint(.pink)
+                    } else {
+                        Button("Customer Support") {
+                            cobrowseManager.establishSessionFromUser(userEmail: viewModel.email, capabilities: ["laser", "drawing"]) { agentCode in
+                                self.agentCode = agentCode
+                                self.showCode = true
+                            }
+                        }
+                        .buttonStyle(.bordered)
+                        .tint(.blue)
                     }
                 }
                 .padding(.bottom)
@@ -140,24 +133,35 @@ struct ContentView: View {
         .unredacted()
         .alert(
             Text("Support request"),
-            isPresented: $viewModel.handleRemoteRequest,
-            presenting: viewModel.cobrowseSession
+            isPresented: $cobrowseManager.sessionRequested,
+            presenting: cobrowseManager.cobrowseSession
         ) { session in
             Button("Allow", role: .none) {
-                viewModel.cobrowseSession?.activate()
+                cobrowseManager.activateSession()
             }
             Button("Cancel", role: .cancel) {
-                viewModel.cobrowseSession?.end()
+                cobrowseManager.endSession { result in
+                    print(result)
+                }
             }
         } message: { session in
             Text("A Support agent has requested to use this app with you. Do you wish to allow this?.")
+        }
+        .alert(
+            Text("6 digit code"),
+            isPresented: $showCode,
+            presenting: agentCode
+        ) { agentCode in
+            Button("Ok", role: .none) {}
+        } message: { agentCode in
+            Text(agentCode)
         }
     }
 }
 
 struct TransactionsView: View {
     
-    @ObservedObject var viewModel = TransactionViewModel()
+    @ObservedObject var viewModel = AccountViewModel()
 
     var body: some View {
         VStack {
