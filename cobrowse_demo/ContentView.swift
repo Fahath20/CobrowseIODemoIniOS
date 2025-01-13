@@ -61,7 +61,7 @@ struct ContentView: View {
         self.showCode = showCode
         self.agentCode = agentCode
         
-        self.cobrowseManager.initSession(userEmail: self.viewModel.email, capabilities: ["laser"])
+        self.cobrowseManager.initSession(userEmail: self.viewModel.email, capabilities: ["cursor", "drawing", "laser"])
     }
 
     var body: some View {
@@ -84,7 +84,10 @@ struct ContentView: View {
                         .tint(.pink)
                     } else {
                         Button("Customer Support") {
-                            cobrowseManager.establishSessionFromUser(userEmail: viewModel.email, capabilities: ["laser", "drawing"]) { agentCode in
+                            // Agent cursor movement will be visible to user
+                            // Agent can point something on the user screen
+                            // Agent can draw on user screen
+                            cobrowseManager.establishSessionFromUser(userEmail: viewModel.email, capabilities: ["cursor", "drawing", "laser"]) { agentCode in
                                 self.agentCode = agentCode
                                 self.showCode = true
                             }
@@ -120,13 +123,31 @@ struct ContentView: View {
             .padding()
             
             Spacer()
+            
             NavigationLink(value: "transactions") {
                 Text("Show Transactions")
+                    .padding()
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.blue, lineWidth: 1)
+                    )
+            }
+            
+            NavigationLink(value: "loanView") {
+                Text("Apply Loan")
+                    .padding()
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.blue, lineWidth: 1)
+                    )
             }
             .navigationDestination(for: String.self) { view in
                 if view == "transactions" {
                     TransactionsView()
                         .redacted()
+                } else if view == "loanView" {
+                    ApplyLoanView()
+                        .unredacted()
                 }
             }
         }
@@ -197,6 +218,27 @@ struct TransactionsView: View {
             Text("\(transaction.amount.formatted(.currency(code: "USD")))")
                 .bold()
                 .redacted()
+        }
+    }
+}
+
+struct ApplyLoanView: View {
+    @State var loanAmount: String = ""
+    @State var reason: String = ""
+
+    var body: some View {
+        VStack {
+            Text("Apply Loan")
+                .padding()
+                .bold()
+            TextField("Amount", text: $loanAmount)
+                .padding()
+                .redacted()
+            TextField("Reason for applying loan", text: $reason)
+                .padding()
+            
+            Button("Submit") { print("Submit Clicked") }
+            Spacer()
         }
     }
 }
